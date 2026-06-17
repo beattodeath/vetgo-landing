@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetGo AI文獻通</title>
+  <meta name="description" content="每日推送獸醫期刊精選文獻到 LINE，AI 導讀一分鐘掌握重點。免費試用 30 天。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif; color: #1a1a1a; font-size: 16px; line-height: 1.7; background: #fff; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+    /* Nav */
+    nav { padding: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+    nav .logo { font-weight: 700; font-size: 1rem; }
+    nav .logo span { color: #06C755; }
+    nav .links a { font-size: 0.8rem; color: #666; margin-left: 20px; }
+
+    /* Hero */
+    .hero { padding: 48px 0 40px; text-align: center; }
+    .hero h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; line-height: 1.4; }
+    .hero p { font-size: 0.95rem; color: #555; margin-bottom: 24px; }
+    .hero .cta { display: inline-block; background: #06C755; color: #fff; padding: 11px 30px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; }
+    .hero .cta:hover { background: #05a647; }
+    .hero .sub { margin-top: 10px; font-size: 0.8rem; color: #999; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
+
+    /* Grid section */
+    .grid-section { padding: 40px 0; }
+    .grid-section h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .grid-item { border: 1px solid #eee; border-radius: 8px; padding: 16px; }
+    .grid-item .em { font-size: 1.1rem; margin-bottom: 6px; display: block; }
+    .grid-item strong { font-size: 0.9rem; display: block; margin-bottom: 3px; }
+    .grid-item p { font-size: 0.82rem; color: #777; line-height: 1.5; }
+
+    /* Pricing */
+    .pricing { padding: 40px 0; }
+    .pricing h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+    .price-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .price-card { border: 1px solid #eee; border-radius: 8px; padding: 20px 12px; text-align: center; position: relative; overflow: visible; }
+    .price-card.pop { border-color: #06C755; background: #f8fdf9; }
+    .price-card.pop::after {
+      content: '🔥 熱門';
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #06C755;
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 2px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .price-card .name { font-size: 0.82rem; color: #888; margin-bottom: 4px; }
+    .price-card .amount { font-size: 1.4rem; font-weight: 800; }
+    .price-card .amount small { font-size: 0.7rem; font-weight: 400; color: #999; }
+    .price-card ul { list-style: none; margin-top: 12px; text-align: left; }
+    .price-card li { font-size: 0.78rem; color: #555; padding: 2px 0; }
+    .price-card li::before { content: '✓ '; color: #06C755; }
+    .pricing .note { font-size: 0.78rem; color: #aaa; margin-top: 12px; }
+
+    /* Use cases */
+    .cases { padding: 40px 0; }
+    .cases h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
+    .case-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .case-item { background: #fafafa; border-radius: 8px; padding: 16px; }
+    .case-item strong { font-size: 0.88rem; display: block; margin-bottom: 4px; }
+    .case-item p { font-size: 0.82rem; color: #666; }
+
+    /* FAQ */
+    .faq { padding: 40px 0; }
+    .faq h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
+    .faq dl { }
+    .faq dt { font-size: 0.9rem; font-weight: 600; padding: 12px 0 4px; border-top: 1px solid #f0f0f0; }
+    .faq dt:first-of-type { border-top: none; }
+    .faq dd { font-size: 0.85rem; color: #666; padding-bottom: 12px; }
+
+    /* Bottom CTA */
+    .bottom-cta { padding: 48px 0; text-align: center; border-top: 1px solid #f0f0f0; }
+    .bottom-cta img { width: 120px; height: 120px; border-radius: 8px; margin-bottom: 12px; }
+    .bottom-cta p { font-size: 0.88rem; color: #666; margin-bottom: 16px; }
+    .bottom-cta .cta { display: inline-block; background: #06C755; color: #fff; padding: 11px 30px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; }
+
+    footer { padding: 16px 0; text-align: center; font-size: 0.7rem; color: #ccc; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.35rem; }
+      .grid { grid-template-columns: 1fr; }
+      .price-row { grid-template-columns: 1fr 1fr; }
+      .case-list { grid-template-columns: 1fr; }
+      nav .links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="logo">Vet<span>Go</span></div>
+    <div class="links">
+      <a href="#features">功能</a>
+      <a href="#pricing">方案</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>獸醫文獻，每天推到你的 LINE</h1>
+    <p>依你的專科自動篩選 × AI 中文導讀<br>設定一次，之後每天早上自動送到</p>
+    <a href="https://lin.ee/nGOIWMa" class="cta">免費試用 30 天</a>
+    <p class="sub">不用綁卡，加好友即開通</p>
+  </section>
+
+  <hr>
+
+  <section class="grid-section" id="features">
+    <h2>怎麼運作的</h2>
+    <div class="grid">
+      <div class="grid-item">
+        <span class="em">🎯</span>
+        <strong>選你的專科</strong>
+        <p>犬貓特寵 + 各臨床專科任選，只推相關文章</p>
+      </div>
+      <div class="grid-item">
+        <span class="em">🤖</span>
+        <strong>AI 中文導讀</strong>
+        <p>快速掌握結論與臨床意義，節省篩選時間</p>
+      </div>
+      <div class="grid-item">
+        <span class="em">⭐</span>
+        <strong>收藏 + 分享</strong>
+        <p>好文章存起來，也能轉給同事</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="pricing" id="pricing">
+    <h2>方案比較</h2>
+    <div class="price-row">
+      <div class="price-card">
+        <div class="name">試用</div>
+        <div class="amount">$0<small>/30天</small></div>
+        <ul>
+          <li>動物 2 種</li>
+          <li>專科 2 科</li>
+          <li>AI 導讀 5 次/月</li>
+          <li>收藏 3 篇</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="name">輕量</div>
+        <div class="amount">$79<small>/月</small></div>
+        <ul>
+          <li>動物 2 種</li>
+          <li>專科 2 科</li>
+          <li>AI 導讀 15 次/月</li>
+          <li>收藏 5 篇</li>
+        </ul>
+      </div>
+      <div class="price-card pop">
+        <div class="name">標準</div>
+        <div class="amount">$99<small>/月</small></div>
+        <ul>
+          <li>動物 3 種</li>
+          <li>專科 3 科</li>
+          <li>AI 導讀 50 次/月</li>
+          <li>收藏 10 篇</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="name">進階</div>
+        <div class="amount">$149<small>/月</small></div>
+        <ul>
+          <li>動物 5 種</li>
+          <li>專科 5 科</li>
+          <li>AI 導讀 100 次/月</li>
+          <li>收藏 20 篇</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">所有方案皆含全部期刊覆蓋、每日推送</p>
+  </section>
+
+  <hr>
+
+  <section class="cases">
+    <h2>適合誰</h2>
+    <div class="case-list">
+      <div class="case-item">
+        <strong>忙碌的臨床獸醫</strong>
+        <p>沒時間翻 PubMed，讓系統每天篩好推給你</p>
+      </div>
+      <div class="case-item">
+        <strong>想持續進修的專科醫師</strong>
+        <p>AI 導讀快速篩選，再決定哪篇值得精讀</p>
+      </div>
+      <div class="case-item">
+        <strong>獸醫系學生</strong>
+        <p>養成讀文獻習慣，收藏功能幫你累積素材</p>
+      </div>
+      <div class="case-item">
+        <strong>帶團隊的院長主治</strong>
+        <p>推薦同事訂閱，晨會前先看導讀有方向</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="faq" id="faq">
+    <h2>FAQ</h2>
+    <dl>
+      <dt>需要綁信用卡嗎？</dt>
+      <dd>不用。加好友自動開通 30 天試用，到期不會自動扣款。</dd>
+      <dt>可以改專科嗎？</dt>
+      <dd>隨時可以。輸入「修改專科」就能重設，隔天生效。</dd>
+      <dt>文獻來源是哪些？</dt>
+      <dd>涵蓋內科、外科、急診、腫瘤、皮膚等各專科的國際獸醫期刊，每日自動更新。</dd>
+      <dt>每天推幾篇？</dt>
+      <dd>看你選的專科和動物，通常 3-10 篇。只推近 7 天新文章。</dd>
+    </dl>
+  </section>
+
+  <section class="bottom-cta">
+    <img src="https://qr-official.line.me/gs/M_229rvshf_BW.png" alt="LINE QR Code">
+    <p>掃碼加好友，明天早上就開始收文獻</p>
+    <a href="https://lin.ee/nGOIWMa" class="cta">加入好友</a>
+  </section>
+
+  <footer>© 2026 VetGo AI文獻通</footer>
+</div>
+
+</body>
+</html>
